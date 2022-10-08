@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,14 +24,28 @@ public class StatementFileReaderBradesco implements StatementFileReader {
     public Map<String, Long> read(Path path) {
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             AtomicInteger lineCounter = new AtomicInteger();
+            AtomicBoolean shouldSkipNext = new AtomicBoolean(false);
             return reader.lines()
             .peek(line -> logger.info("Line#{} -> {}", lineCounter.addAndGet(1), line))
-            .skip(2)
             .filter(Objects::nonNull)
             .map(String::trim)
             .filter(StringUtils::hasLength)
-            .map(line -> line.split("\t\t\t\t"))
-            .map(chunks -> chunks[1])
+            .peek(line -> {
+                switch (line) {
+                    case "SALDO ANTERIOR":
+                    case "PAGTO. POR DEB EM C/C":
+                        shouldSkipNext.set(true);
+                        break;
+                }
+            })
+            .filter(line -> line.contains(","))
+            .filter(line -> {
+                if (shouldSkipNext.get()) {
+                    shouldSkipNext.set(false);
+                    return false;
+                }
+                return true;
+            })
             .peek(extractedValue -> logger.info("Line#{} -> {}", lineCounter.get(), extractedValue))
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         } catch (Exception e) {
