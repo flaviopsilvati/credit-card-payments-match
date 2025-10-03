@@ -1,21 +1,34 @@
-11/11/21	TV Premium
 Assinaturas e serviços
-R$ -27,90	
-12/11/21	BAR
+11/11
+TV Premium
+-27,90
+
 Bares e restaurantes
-R$ -11,00	
-12/11/21	BAR
+12/11
+BAR
+-11,00
+
 Alimentação
-R$ -17,00	
-12/11/21	BAR
+12/11/21
+BAR
+-17,00
+
 Bares e restaurantes
-R$ -100,00	
-12/11/21	BAR
+12/11
+BAR
+-100,00
+
 Bares e restaurantes
-R$ -100,00	
-13/11/21	CAR
+12/11
+BAR
+-100,00
+
 Transporte
-R$ -15,94	
-13/11/21	CAR
+13/11
+CAR
+-15,94
+
 Transporte
-R$ -12,09	
+13/11
+CAR
+-12,09

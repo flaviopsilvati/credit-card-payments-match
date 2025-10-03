@@ -10,19 +10,19 @@ import java.util.Set;
 public class StatementsMatcher {
 
     public Set<String> matchStatements(Map<String, Long> statement1, Map<String, Long> statement2) {
-        Set<String> valuesOk = new HashSet<>();
-        Set<String> result = new HashSet<>();
+        var valuesOk = new HashSet<String>();
+        var result = new HashSet<String>();
 
         statement1.forEach((k, v) -> {
-            if (statement2.containsKey(k) && statement2.get(k).equals(v)){
+            if (statement2.containsKey(k) && statement2.get(k).equals(v)) {
                 valuesOk.add(k);
-            } else{
+            } else {
                 result.add(k);
             }
         });
 
         statement2.keySet().forEach(k -> {
-            if (!valuesOk.contains(k)){
+            if (!valuesOk.contains(k)) {
                 result.add(k);
             }
         });

@@ -42,15 +42,15 @@ public class CreditCardPaymentsMatchApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner() {
 		return args -> {
-			Map<String, Long> statementBradesco = statementFileReaderBradesco.read(
+			var statementBradesco = statementFileReaderBradesco.read(
 				Paths.get("src", "main", "resources", "bradesco.txt")
 			);
 
-			Map<String, Long> statementOrganizze = statementFileReaderOrganizze.read(
+			var statementOrganizze = statementFileReaderOrganizze.read(
 				Paths.get("src", "main", "resources", "organizze.txt")
 			);
 
-			Set<String> result = matcher.matchStatements(statementBradesco, statementOrganizze);
+			var result = matcher.matchStatements(statementBradesco, statementOrganizze);
 
 			logger.info("---------Results---------");
 			result.forEach(logger::info);

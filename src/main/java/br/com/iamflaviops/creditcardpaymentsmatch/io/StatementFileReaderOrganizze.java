@@ -21,15 +21,15 @@ public class StatementFileReaderOrganizze implements StatementFileReader {
 
     @Override
     public Map<String, Long> read(Path path) {
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            AtomicInteger lineCounter = new AtomicInteger();
+        try (var reader = Files.newBufferedReader(path)) {
+            var lineCounter = new AtomicInteger();
             return reader.lines()
             .peek(line -> logger.info("Line#{} -> {}", lineCounter.addAndGet(1), line))
             .filter(Objects::nonNull)
             .map(String::trim)
             .filter(StringUtils::hasLength)
-            .filter(line -> line.startsWith("R$"))
-            .map(line -> line.split(" -"))
+            .filter(line -> line.startsWith("-"))
+            .map(line -> line.split("-"))
             .map(chunks -> chunks[1])
             .peek(extractedValue -> logger.info("Line#{} -> {}", lineCounter.get(), extractedValue))
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));

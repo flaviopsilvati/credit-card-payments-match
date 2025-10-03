@@ -22,20 +22,21 @@ public class StatementFileReaderBradesco implements StatementFileReader {
 
     @Override
     public Map<String, Long> read(Path path) {
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            AtomicInteger lineCounter = new AtomicInteger();
-            AtomicBoolean shouldSkipNext = new AtomicBoolean(false);
+        try (var reader = Files.newBufferedReader(path)) {
+            var lineCounter = new AtomicInteger();
+            var shouldSkipNext = new AtomicBoolean(false);
             return reader.lines()
             .peek(line -> logger.info("Line#{} -> {}", lineCounter.addAndGet(1), line))
             .filter(Objects::nonNull)
             .map(String::trim)
             .filter(StringUtils::hasLength)
             .peek(line -> {
-                switch (line) {
-                    case "SALDO ANTERIOR":
-                    case "PAGTO. POR DEB EM C/C":
-                        shouldSkipNext.set(true);
-                        break;
+                // Modern switch expression (Java 14+, enhanced in Java 17)
+                if (switch (line) {
+                    case "SALDO ANTERIOR", "PAGTO. POR DEB EM C/C" -> true;
+                    default -> false;
+                }) {
+                    shouldSkipNext.set(true);
                 }
             })
             .filter(line -> line.contains(","))
