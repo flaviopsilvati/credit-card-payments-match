@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +29,7 @@ public class StatementsMatcherTests {
             "27,90", 2L
         );
 
-        Set<String> notMatchingValues = matcher.matchStatements(statement1, statement2);
+        List<String> notMatchingValues = matcher.matchStatements(statement1, statement2);
 
         assertTrue(notMatchingValues.isEmpty());
     }
@@ -47,11 +47,11 @@ public class StatementsMatcherTests {
                 "27,90", 2L
         );
 
-        Set<String> notMatchingValues = matcher.matchStatements(statement1, statement2);
+        List<String> notMatchingValues = matcher.matchStatements(statement1, statement2);
 
         assertEquals(2, notMatchingValues.size());
-        assertTrue(notMatchingValues.contains("100,00"));
-        assertTrue(notMatchingValues.contains("27,90"));
+        assertTrue(notMatchingValues.stream().anyMatch(s -> s.contains("100,00") && s.contains("different counts")));
+        assertTrue(notMatchingValues.stream().anyMatch(s -> s.contains("27,90") && s.contains("Found only in Organizze")));
     }
 
     @Test
@@ -67,10 +67,10 @@ public class StatementsMatcherTests {
             "100,00", 2L
         );
 
-        Set<String> notMatchingValues = matcher.matchStatements(statement1, statement2);
+        List<String> notMatchingValues = matcher.matchStatements(statement1, statement2);
 
         assertEquals(2, notMatchingValues.size());
-        assertTrue(notMatchingValues.contains("100,00"));
-        assertTrue(notMatchingValues.contains("27,90"));
+        assertTrue(notMatchingValues.stream().anyMatch(s -> s.contains("100,00") && s.contains("different counts")));
+        assertTrue(notMatchingValues.stream().anyMatch(s -> s.contains("27,90") && s.contains("Found only in Bradesco")));
     }
 }
