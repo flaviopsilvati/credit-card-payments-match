@@ -12,8 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Set;
 
 @SpringBootApplication
 public class CreditCardPaymentsMatchApplication {
